@@ -11,12 +11,11 @@ export default function InternDashboard() {
         if (Array.isArray(data)) {
           setDepartments(data);
         } else {
-          console.error('Expected array but got:', data);
           setDepartments([]);
         }
       })
       .catch((err) => {
-        console.error('Failed to fetch departments:', err);
+        console.error('Error fetching departments:', err);
         setDepartments([]);
       });
   }, []);
@@ -27,7 +26,6 @@ export default function InternDashboard() {
       style={{ backgroundImage: 'url(/images/landingpage3.jpg)' }}
     >
       <div className="max-w-7xl mx-auto bg-black/60 p-6 rounded-xl shadow-lg">
-        {/* 🎓 Intern Info */}
         <h1 className="text-3xl font-bold mb-2">🎉 Welcome, Irfan Riyaz</h1>
         <p className="text-lg mb-2">
           <strong>Referral Code:</strong>{' '}
@@ -38,7 +36,7 @@ export default function InternDashboard() {
           <span className="text-green-400">₹12890</span>
         </p>
 
-        {/* 🏆 Rewards */}
+        {/* Rewards Section */}
         <div className="bg-white/10 p-4 rounded-lg mb-6">
           <h2 className="text-xl font-semibold mb-2">🏆 Rewards & Unlockables</h2>
           <ul className="list-disc ml-6 text-sm text-white/80">
@@ -48,16 +46,14 @@ export default function InternDashboard() {
           </ul>
         </div>
 
-        {/* 📚 Departments List */}
+        {/* Departments Section */}
         <div className="bg-white/10 p-4 rounded-lg mb-4">
           <h2 className="text-2xl font-bold mb-4 text-center">
             📚 Departments You Can Support
           </h2>
 
           {departments.length === 0 ? (
-            <p className="text-center text-white/60">
-              No departments available yet.
-            </p>
+            <p className="text-center text-white/60">No departments available yet.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {departments.map((dept, index) => (
