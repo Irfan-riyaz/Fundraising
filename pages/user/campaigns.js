@@ -1,16 +1,20 @@
-// pages/user/campaigns.js
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useCart } from '../../components/CartContext';
 
 export default function CampaignsPage() {
   const [campaigns, setCampaigns] = useState([]);
-  const { cart, setCart } = useCart();
+  const [hasMounted, setHasMounted] = useState(false);
   const [modalImage, setModalImage] = useState(null);
   const [toast, setToast] = useState('');
   const router = useRouter();
 
+  // SSR-safe cart hook
+  const cartContext = hasMounted ? useCart() : { cart: [], setCart: () => {} };
+  const { cart, setCart } = cartContext;
+
   useEffect(() => {
+    setHasMounted(true);
     fetch('/api/products')
       .then((res) => res.json())
       .then(setCampaigns)
@@ -33,6 +37,8 @@ export default function CampaignsPage() {
     setToast(`${campaign.title} added to donations`);
     setTimeout(() => setToast(''), 2000);
   };
+
+  if (!hasMounted) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#2f3c7e] via-[#4053a3] to-[#f0c6d8] text-white p-10">
@@ -93,13 +99,6 @@ export default function CampaignsPage() {
           💼 View Donations
         </button>
       </div>
-
-      {modalImage && (
-        <ImageSpinModal
-          image={modalImage}
-          onClose={() => setModalImage(null)}
-        />
-      )}
     </div>
   );
 }
