@@ -1,8 +1,7 @@
 // pages/user/campaigns.js
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useCart } from '../../components/DonationContext'; // You can later rename this to DonationContext if desired
-import ImageSpinModal from '../../components/CartContext';
+import { useCart } from '../../components/CartContext';
 
 export default function CampaignsPage() {
   const [campaigns, setCampaigns] = useState([]);
@@ -12,7 +11,7 @@ export default function CampaignsPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch('/api/products') // 🔁 You may rename API to /api/campaigns later
+    fetch('/api/products')
       .then((res) => res.json())
       .then(setCampaigns)
       .catch((err) => console.error('Error fetching campaigns:', err));
@@ -59,7 +58,6 @@ export default function CampaignsPage() {
               <h2 className="text-xl font-bold mb-1">{campaign.title}</h2>
               <p className="text-white/70 text-sm mb-2">{campaign.description}</p>
 
-              {/* 🟦 Progress Bar */}
               <div className="w-full bg-gray-300/40 rounded-full h-3 mb-2">
                 <div
                   className="bg-green-400 h-3 rounded-full transition-all duration-500"
@@ -70,7 +68,6 @@ export default function CampaignsPage() {
                 ₹{raised} raised of ₹{goal}
               </p>
 
-              {/* 💸 Contribute Button */}
               <button
                 onClick={() => addToCart(campaign)}
                 className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-full transition"
@@ -88,7 +85,6 @@ export default function CampaignsPage() {
         })}
       </div>
 
-      {/* 📦 View Donation Cart */}
       <div className="w-full text-center mt-16">
         <button
           onClick={() => router.push('/cart')}
@@ -98,7 +94,6 @@ export default function CampaignsPage() {
         </button>
       </div>
 
-      {/* 🖼️ Full Image Modal with 360 spin */}
       {modalImage && (
         <ImageSpinModal
           image={modalImage}
