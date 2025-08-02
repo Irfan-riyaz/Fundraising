@@ -1,15 +1,29 @@
 // pages/cart.js
-import { useCart } from '../components/DonationContext';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+// Dynamically import the context
+const useCartSafe = () => {
+  if (typeof window === 'undefined') return { cart: [], setCart: () => {} };
+
+  try {
+    const { useCart } = require('../components/DonationContext');
+    return useCart();
+  } catch {
+    return { cart: [], setCart: () => {} };
+  }
+};
 
 export default function DonationCartPage() {
-  const { cart, setCart } = useCart();
+  const { cart, setCart } = useCartSafe();
   const router = useRouter();
+  const [totalAmount, setTotalAmount] = useState(0);
 
-  const totalAmount = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  useEffect(() => {
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    setTotalAmount(total);
+  }, [cart]);
 
   const handleRemove = (id) => {
     setCart(cart.filter((item) => item._id !== id));
