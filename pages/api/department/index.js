@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   try {
     const { db } = await connectToDatabase();
     const departments = await db
-      .collection('departments')
+      .collection('department')
       .find({})
       .limit(5)
       .toArray();
@@ -15,3 +15,4 @@ export default async function handler(req, res) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
